@@ -13,7 +13,7 @@ public class Main {
                 System.out.println(method.getName());
             }
         } catch (Exception ex) {
-            System.err.println(String.format("Error running scanner:", ex.toString()));
+            System.err.println(String.format("Error running scanner: %s", ex));
 
         }
     }
