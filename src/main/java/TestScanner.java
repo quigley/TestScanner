@@ -12,7 +12,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.List;
+import java.nio.file.Path;
 
 public class TestScanner {
     public ArrayList<Method> GetAllTestMethods(String pathToJar) throws IOException {
@@ -61,8 +64,8 @@ public class TestScanner {
         return methods;
     }
 
-    public Stream GetAllFeatureFiles(String pathToJar){
-        Stream filesStream = null;
+    public List<String> GetAllFeatureFiles(String pathToJar){
+        Stream<Path> filesStream = null;
         try {
            filesStream = Files.walk(Paths.get(pathToJar))
                     .filter(x -> x.getFileName()
@@ -73,6 +76,9 @@ public class TestScanner {
         catch (IOException ex){
             System.err.println(ex);
         }
-        return filesStream;
+        List<String> files = filesStream
+                .map(path -> Files.isDirectory(path) ? path.toString() + '/' : path.toString())
+                .collect(Collectors.toList());
+        return files;
     }
 }

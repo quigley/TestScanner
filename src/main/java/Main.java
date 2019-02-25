@@ -1,6 +1,6 @@
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.stream.Stream;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -24,7 +24,7 @@ public class Main {
                 methods.forEach(System.out::println);
             }
             if (format.equalsIgnoreCase("cucumber")) {
-                Stream featureFiles = testScanner.GetAllFeatureFiles(path);
+                List<String > featureFiles = testScanner.GetAllFeatureFiles(path);
                 featureFiles.forEach(System.out::println);
             }
 
