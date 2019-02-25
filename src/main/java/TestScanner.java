@@ -1,19 +1,21 @@
 import org.junit.Test;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.stream.Stream;
 
 public class TestScanner {
-    public ArrayList<Method> GetAllTestMethods(String pathToJar, String classToScann) throws IOException, InvocationTargetException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException {
+    public ArrayList<Method> GetAllTestMethods(String pathToJar) throws IOException {
         Set<Class<?>> classes = new HashSet<>();
 
         URL[] jarUrl = {new URL("file:" + pathToJar)};
@@ -57,5 +59,20 @@ public class TestScanner {
             }
         }
         return methods;
+    }
+
+    public Stream GetAllFeatureFiles(String pathToJar){
+        Stream filesStream = null;
+        try {
+           filesStream = Files.walk(Paths.get(pathToJar))
+                    .filter(x -> x.getFileName()
+                            .toString()
+                            .toLowerCase()
+                            .endsWith(".feature"));
+        }
+        catch (IOException ex){
+            System.err.println(ex);
+        }
+        return filesStream;
     }
 }
